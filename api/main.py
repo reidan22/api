@@ -8,5 +8,10 @@ def hello():
     response = {'message': 'Hello, Flask API!'}
     return jsonify(response)
 
+@app.route('/api/danny', methods=['GET'])
+def hello():
+    response = {'message': 'Hello, This is Danny!'}
+    return jsonify(response)
+
 if __name__ == '__main__':
     app.run(debug=True)
