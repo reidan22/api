@@ -9,7 +9,7 @@ def hello():
     return jsonify(response)
 
 @app.route('/api/danny', methods=['GET'])
-def hello():
+def danny1():
     response = {'message': 'Hello, This is Danny!'}
     return jsonify(response)
 
