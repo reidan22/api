@@ -1,6 +1,6 @@
-from flask import Flask, jsonify
+from flask import jsonify
+from app import app
 
-app = Flask(__name__)
 
 # Define a simple endpoint
 @app.route('/api/hello', methods=['GET'])
@@ -12,6 +12,3 @@ def hello():
 def danny1():
     response = {'message': 'Hello, This is Danny!'}
     return jsonify(response)
-
-if __name__ == '__main__':
-    app.run(debug=True)
