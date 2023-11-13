@@ -1,9 +1,8 @@
 import json
-import pyarrow.parquet as pq
-
-
+import pandas as pd
 def read_parquet_to_df(file_path):
-    return pq.read_table(file_path).to_pandas()
+    return pd.read_parquet(file_path, engine='fastparquet')
+
 
 
 def df_rows_to_json(df):
