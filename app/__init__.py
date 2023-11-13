@@ -18,7 +18,7 @@ app = FlaskAPIApp(__name__)
 
 @dataclass
 class ToolInfo():
-    version = "0.0.1a"
+    version = "0.0.1b"
     author = "Danny"
 
     def json_info(self):
