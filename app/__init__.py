@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from flask import Flask
 
 
@@ -14,5 +15,23 @@ class FlaskAPIApp(Flask):
 
 
 app = FlaskAPIApp(__name__)
+
+@dataclass
+class ToolInfo():
+    version = "0.0.1a"
+    author = "Danny"
+
+    def json_info(self):
+        info = {
+            "version": self.version,
+            "author": self.author
+        }
+        return jsonify(info) 
+
+@app.route("/info", methods=["GET"])
+def get_api_info():
+    info = ToolInfo()
+    response = info.json_info()
+    return response, 200
 
 from app.ph2022.read import *
