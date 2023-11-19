@@ -12,19 +12,18 @@ def calc_container(path):
     return total_size
 
 
-
 dists = [d for d in pkg_resources.working_set]
 total_size = 0
 for dist in dists:
     try:
         path = os.path.join(dist.location, dist.project_name)
         _size = calc_container(path)
-        if _size/1000 > 1.0:
-            print (f"{dist}: {size(_size)}")
-            print("-"*40)
+        if _size / 1000 > 1.0:
+            print(f"{dist}: {size(_size)}")
+            print("-" * 40)
             total_size += _size
 
     except OSError:
-        '{} no longer exists'.format(dist.project_name)
+        "{} no longer exists".format(dist.project_name)
 
 print(f"Total size: {size(total_size)}")

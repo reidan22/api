@@ -1,9 +1,10 @@
 import json
 import pandas as pd
-def read_parquet_to_df(file_path):
-    df = pd.read_parquet(file_path, engine='fastparquet')
-    return df
 
+
+def read_parquet_to_df(file_path):
+    df = pd.read_parquet(file_path, engine="fastparquet")
+    return df
 
 
 def df_rows_to_json(df):

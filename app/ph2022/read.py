@@ -1,8 +1,17 @@
 from flask import jsonify
 from app.utils.utils import df_rows_to_json
-from app.ph2022 import ELECTIONS_DF, FIRST_NAMES, LAST_NAMES, PARTIES, POSITIONS, PROVINCES, RAW_DATA_DICT, REGIONS
+from app.ph2022 import (
+    CANDIDATE_INFOS,
+    ELECTIONS_DF,
+    FIRST_NAMES,
+    LAST_NAMES,
+    PARTIES,
+    POSITIONS,
+    PROVINCES,
+    RAW_DATA_DICT,
+    REGIONS,
+)
 from app import app
-
 
 
 def get_summarized_data_per_person():
@@ -17,44 +26,49 @@ def get_all():
     response = RAW_DATA_DICT
     return response, 200
 
+
 @app.route("/ph2022/all/<key>", methods=["GET"])
-def get_all_by_key(key=None):
+def get_by_key(key=None):
     response = RAW_DATA_DICT.get(key, None)
     if not response:
         return jsonify({"error": f"{key} is not listed."}), 500
     return response, 200
 
+
 @app.route("/ph2022/position/<position>", methods=["GET"])
-def get_all_per_position(position=None):
+def get_per_position(position=None):
     response = get_summarized_data_per_person()
     if position in POSITIONS:
-        response = [
-            data
-            for data in response
-            if data["position"] == position
-        ], 200
+        response = [data for data in response if data["position"] == position], 200
     else:
         response = jsonify({"error": "position not listed."}), 500
     return response
 
+
 @app.route("/ph2022/candidate/<candidate>", methods=["GET"])
-def get_all_per_name(candidate=None):
+def get_per_name(candidate=None):
     response = get_summarized_data_per_person()
     if candidate in FIRST_NAMES:
-        response = [
-            data
-            for data in response
-            if candidate in data["first_name"] 
-        ], 200
+        response = [data for data in response if candidate in data["first_name"]][0], 200
     elif candidate in LAST_NAMES:
-        response = [
-            data
-            for data in response
-            if candidate in data["last_name"] 
-        ], 200    
+        response = [data for data in response if candidate in data["last_name"]][0], 200
     else:
         response = jsonify({"error": "name is not in the list."}), 500
     return response
+
+@app.route("/ph2022/candidate/all/<candidate>", methods=["GET"])
+def get_all_per_name(candidate=None):
+    response = CANDIDATE_INFOS
+    if candidate in FIRST_NAMES or candidate in LAST_NAMES:
+        for candidate_info in CANDIDATE_INFOS.values():
+            if candidate in candidate_info.full_name:
+                response = candidate_info
+                break
+        response = response.to_json(), 200
+    else:
+        response = jsonify({"error": "name is not in the list."}), 500
+    return response
+
 
 @app.route("/danny", methods=["GET"])
 def danny1():
