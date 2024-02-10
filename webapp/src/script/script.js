@@ -25,7 +25,8 @@ paths.forEach(path => {
 });
 
 
-API_PATH = "http://127.0.0.1:5000/api/ph2022/colors_by_region"
+// API_PATH = "http://127.0.0.1:5000/api/ph2022/colors_by_region"
+API_PATH = "https://reidan-api.vercel.app/api/ph2022/colors_by_region"
 let colorByRegionDict;
 
 let a = fetch(API_PATH)

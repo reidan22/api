@@ -1,6 +1,5 @@
 from dataclasses import dataclass, field
 import json
-from flask import jsonify
 
 
 @dataclass
