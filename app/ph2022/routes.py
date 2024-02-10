@@ -85,25 +85,27 @@ def get_per_position():
 
 @app.route("/ph2022/candidate", methods=["GET"])
 def get_per_candidate():
-    first_name = request.args.get("first_name", None)
-    last_name = request.args.get("last_name", None)
+    first_names = request.args.getlist("first_name", None)
+    last_names = request.args.getlist("last_name", None)
 
     vote_data = get_data_per_candidate()
-    if not first_name and not last_name:
+    if not first_names and not last_names:
         response = JSONObject(
             data=vote_data, desc="ph2022 data - data per candidate"
         )
         return response.json_object, 200
 
     filtered_data_by_name = {}
-    for name, data in vote_data.items():
-        if first_name:
-            if first_name.lower() in data["first_name"]:
-                filtered_data_by_name[name] = data
-
-        if last_name:
-            if last_name.lower() in data["last_name"]:
-                filtered_data_by_name[name] = data
+    for first_name in first_names:
+        for name, data in vote_data.items():
+            if first_name:
+                if first_name.lower() in data["first_name"]:
+                    filtered_data_by_name[name] = data
+    for last_name in last_names:
+        for name, data in vote_data.items():
+            if last_name:
+                if last_name.lower() in data["last_name"]:
+                    filtered_data_by_name[name] = data
 
     response = JSONObject(
             data=filtered_data_by_name, desc="ph2022 data - data per candidate"
