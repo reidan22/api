@@ -1,5 +1,6 @@
 from flask import jsonify
-from app.utils.utils import df_rows_to_json
+
+from app import app
 from app.ph2022 import (
     CANDIDATE_INFOS,
     ELECTIONS_DF,
@@ -11,7 +12,7 @@ from app.ph2022 import (
     RAW_DATA_DICT,
     REGIONS,
 )
-from app import app
+from app.utils.utils import df_rows_to_json
 
 
 def get_summarized_data_per_person():
@@ -49,12 +50,16 @@ def get_per_position(position=None):
 def get_per_name(candidate=None):
     response = get_summarized_data_per_person()
     if candidate in FIRST_NAMES:
-        response = [data for data in response if candidate in data["first_name"]][0], 200
+        response = (
+            [data for data in response if candidate in data["first_name"]][0],
+            200,
+        )
     elif candidate in LAST_NAMES:
         response = [data for data in response if candidate in data["last_name"]][0], 200
     else:
         response = jsonify({"error": "name is not in the list."}), 500
     return response
+
 
 @app.route("/ph2022/candidate/all/<candidate>", methods=["GET"])
 def get_all_per_name(candidate=None):

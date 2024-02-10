@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from flask import Flask
 
-from constants import AUTHOR, CUSTOM_URL_HEADER, LATEST_UPDATE, VERSION
+CUSTOM_URL_HEADER = "api"
 
 
 class FlaskAPIApp(Flask):
@@ -19,16 +19,11 @@ app = FlaskAPIApp(__name__)
 
 @dataclass
 class ToolInfo:
-    version = VERSION
-    author = AUTHOR
-    latest_update = LATEST_UPDATE
+    version = "0.0.1c"
+    author = "Danny"
 
     def json_info(self):
-        info = {
-            "version": self.version,
-            "author": self.author,
-            "latest_update": self.latest_update,
-        }
+        info = {"version": self.version, "author": self.author}
         return jsonify(info)
 
 
@@ -39,6 +34,4 @@ def get_api_info():
     return response, 200
 
 
-app.json.sort_keys = False
-
-from app.ph2022.routes import *
+from app.ph2022.read import *
