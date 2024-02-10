@@ -1,0 +1,52 @@
+body,
+html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: whitesmoke;
+}
+
+.map-container {
+    max-width: 100%;
+    max-height: 100%;
+    /* overflow: auto; */
+}
+
+path {
+    fill: rgb(217, 217, 217);
+    /* Default fill color */
+    stroke: rgb(24, 24, 24);
+    /* Default stroke color */
+    transition: fill 0.3s ease, stroke 0.3s ease;
+    /* Transition for fill and stroke properties */
+}
+
+path:hover {
+    stroke: rgb(217, 217, 217);
+    /* Default fill color */
+    fill: rgb(24, 24, 24);
+    /* Default stroke color */
+}
+
+
+/* CSS code */
+
+[data-region="region iii"] {
+    fill: rgb(241, 66, 233);
+    /* Default fill color */
+    stroke: rgb(0, 0, 0);
+}
+
+
+/* Popup */
+
+#popup {
+    position: absolute;
+    background-color: white;
+    padding: 5px;
+    border: 1px solid black;
+    display: none;
+    /* Initially hide the popup */
+}

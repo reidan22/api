@@ -10,7 +10,6 @@ def get_vote_data():
     json_object = df_rows_to_json(read_parquet_to_df(PH2022_ELECTION_PARQUET_FILE_PATH))
     vote_data = []
     for data in json_object:
-        print(data["province"])
         if "ncr -" in data["province"]:
             data["province"] = "ncr"
         vote_data.append(VoteData(**data))

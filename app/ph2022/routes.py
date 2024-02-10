@@ -1,6 +1,7 @@
 from copy import deepcopy
 import copy
 import json
+import random
 from app.ph2022.constants import PH2022_ELECTION_PARQUET_FILE_PATH
 from app.ph2022.models import JSONObject
 from app.ph2022.query import (
@@ -163,3 +164,17 @@ def get_keys_per_category():
         desc = "ph2022 data - data per category keys"
 
     return JSONObject(data=data, desc=desc).json_object, 200
+
+@app.route("/ph2022/colors_by_region", methods=["GET"])
+def get_colors_by_region():
+    regions = PROVINCE_BY_REGION_DICT.keys()
+    data = {}
+    for region in regions:
+        colors = []
+        random.seed()
+        for _ in range(3):
+            colors.append(random.randint(0,255))
+        data[region] = colors
+    return JSONObject(data=data, desc="Testing for setting colors.").json_object
+
+

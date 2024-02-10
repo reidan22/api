@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
 from flask import Flask
+from flask_cors import CORS
 
 from constants import AUTHOR, CUSTOM_URL_HEADER, LATEST_UPDATE, VERSION
 
@@ -13,8 +14,8 @@ class FlaskAPIApp(Flask):
             rule, endpoint, view_func, **options
         )
 
-
 app = FlaskAPIApp(__name__)
+CORS(app)  # Enable CORS for all routes
 
 
 @dataclass
