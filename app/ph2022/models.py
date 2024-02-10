@@ -1,4 +1,6 @@
 from dataclasses import dataclass, field
+import json
+from flask import jsonify
 
 
 @dataclass
@@ -37,8 +39,8 @@ class JSONObject:
 
     @property
     def json_object(self):
-        return {"desc": self.desc, "count": self.json_object_count, "data": self.data}
-
+        response = {"desc": self.desc, "count": self.json_object_count, "data": self.data}
+        return jsonify(response)
 
 @dataclass
 class VoteData:
@@ -58,6 +60,8 @@ class VoteData:
 
     @property
     def json_object(self):
+
+
         return {
             "region": self.region,
             "province": self.province,
