@@ -4,8 +4,10 @@ import json
 from app.ph2022.constants import PH2022_ELECTION_PARQUET_FILE_PATH
 from app.ph2022.models import JSONObject
 from app.ph2022.query import (
+    PROVINCE_BY_REGION_DICT,
     VOTE_DATA_LIST,
     get_data_per_candidate,
+    get_data_per_category_keys,
     get_data_per_position,
     get_data_per_region,
     get_vote_data,
@@ -90,9 +92,7 @@ def get_per_candidate():
 
     vote_data = get_data_per_candidate()
     if not first_names and not last_names:
-        response = JSONObject(
-            data=vote_data, desc="ph2022 data - data per candidate"
-        )
+        response = JSONObject(data=vote_data, desc="ph2022 data - data per candidate")
         return response.json_object, 200
 
     filtered_data_by_name = {}
@@ -108,8 +108,8 @@ def get_per_candidate():
                     filtered_data_by_name[name] = data
 
     response = JSONObject(
-            data=filtered_data_by_name, desc="ph2022 data - data per candidate"
-        )
+        data=filtered_data_by_name, desc="ph2022 data - data per candidate"
+    )
     return response.json_object, 200
 
 
@@ -118,23 +118,48 @@ def get_per_region():
     region = request.args.get("region", None)
     vote_data = get_data_per_region()
     if not region:
-        return JSONObject(
-            data=vote_data, desc="ph2022 data - data per region"
-        ).json_object, 200
+        return (
+            JSONObject(
+                data=vote_data, desc="ph2022 data - data per region"
+            ).json_object,
+            200,
+        )
 
-    region = region.replace("_"," ").lower()
+    region = region.replace("_", " ").lower()
     if region not in vote_data:
         data = {}
         desc = f"{region} is not a valid region."
         return JSONObject(data=data, desc=desc).json_object, 200
-    
 
     data = copy.deepcopy(vote_data[region])
     for position, candidates in vote_data[region].items():
         max_key, max_value = max(candidates.items(), key=lambda x: x[1])
         min_key, min_value = min(candidates.items(), key=lambda x: x[1])
-        data["max"][position] = {max_key:max_value}
-        data["min"][position] = {min_key:min_value}
 
-    return JSONObject( data=data, desc="ph2022 data - data per region").json_object, 200
+        data["max"][position] = {max_key: max_value}
+        data["min"][position] = {min_key: min_value}
+        data["provinces"] = list(PROVINCE_BY_REGION_DICT[region])
 
+    return JSONObject(data=data, desc="ph2022 data - data per region").json_object, 200
+
+
+@app.route("/ph2022/keys", methods=["GET"])
+def get_keys_per_category():
+    _key = request.args.get("key", None)
+
+    vote_data = get_data_per_category_keys()
+    if not _key:
+        return (
+            JSONObject(
+                data=vote_data, desc="ph2022 data - data per category keys"
+            ).json_object,
+            200,
+        )
+    if _key in vote_data.keys():
+        data = vote_data[_key]
+        desc = f"ph2022 data - data per category key ({_key})"
+    else:
+        data = {}
+        desc = "ph2022 data - data per category keys"
+
+    return JSONObject(data=data, desc=desc).json_object, 200

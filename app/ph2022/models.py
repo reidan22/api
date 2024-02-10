@@ -39,8 +39,13 @@ class JSONObject:
 
     @property
     def json_object(self):
-        response = {"desc": self.desc, "count": self.json_object_count, "data": self.data}
-        return jsonify(response)
+        response = {
+            "desc": self.desc,
+            "count": self.json_object_count,
+            "data": self.data,
+        }
+        return response
+
 
 @dataclass
 class VoteData:
@@ -60,7 +65,6 @@ class VoteData:
 
     @property
     def json_object(self):
-
 
         return {
             "region": self.region,
