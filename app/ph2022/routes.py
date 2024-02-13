@@ -5,7 +5,9 @@ import random
 from app.ph2022.constants import PH2022_ELECTION_PARQUET_FILE_PATH
 from app.ph2022.models import JSONObject
 from app.ph2022.query import (
+    CANDIDATES_LIST,
     PROVINCE_BY_REGION_DICT,
+    TOTAL_VOTES_PER_POSITION_PER_REGION,
     VOTE_DATA_LIST,
     get_data_per_candidate,
     get_data_per_category_keys,
@@ -90,7 +92,7 @@ def get_per_position():
 def get_per_candidate():
     first_names = request.args.getlist("first_name", None)
     last_names = request.args.getlist("last_name", None)
-
+    
     vote_data = get_data_per_candidate()
     if not first_names and not last_names:
         response = JSONObject(data=vote_data, desc="ph2022 data - data per candidate")
@@ -108,6 +110,12 @@ def get_per_candidate():
                 if last_name.lower() in data["last_name"]:
                     filtered_data_by_name[name] = data
 
+    for candidate, data in filtered_data_by_name.items():
+        region_percents = dict()
+        for region, votes in data["regions"].items():
+            region_total_vote_per_position = TOTAL_VOTES_PER_POSITION_PER_REGION[data["position"]][region]
+            region_percents[region] = round(votes / region_total_vote_per_position, 4)
+        data["region_percents"] = region_percents
     response = JSONObject(
         data=filtered_data_by_name, desc="ph2022 data - data per candidate"
     )
@@ -177,4 +185,16 @@ def get_colors_by_region():
         data[region] = colors
     return JSONObject(data=data, desc="Testing for setting colors.").json_object
 
+
+
+@app.route("/ph2022/colors_by_candidate", methods=["GET"])
+def get_colors_by_candidate():
+    data = {}
+    for candidate in CANDIDATES_LIST:
+        colors = []
+        random.seed()
+        for _ in range(3):
+            colors.append(random.randint(0,255))
+        data[candidate] = colors
+    return JSONObject(data=data, desc="Testing for setting colors.").json_object
 

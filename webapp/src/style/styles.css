@@ -5,13 +5,21 @@ html {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: whitesmoke;
+    background-color: white;
 }
 
 .map-container {
     max-width: 100%;
     max-height: 100%;
+    z-index: 0;
+    transition: fill 0.3s ease, stroke 0.3s ease;
     /* overflow: auto; */
+}
+
+.centrify {
+    align-items: center;
+    display: flex;
+    justify-content: center
 }
 
 path {
@@ -48,5 +56,156 @@ path:hover {
     padding: 5px;
     border: 1px solid black;
     display: none;
+    font-size: 20px;
     /* Initially hide the popup */
 }
+
+
+/* Search Bar */
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -500px;
+    /* Initially collapsed */
+    width: 500px;
+    height: 100%;
+    background-color: #9d9d9d;
+    color: black;
+    transition: left 0.3s ease;
+    z-index: 1000;
+    overflow: auto;
+    /* Ensure the sidebar appears on top */
+}
+
+.main-content {
+    margin-left: 0;
+    z-index: 200;
+    /* Ensure main content appears below the sidebar */
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    z-index: 1001;
+    font-size: 30px;
+    /* Ensure the close button appears on top */
+}
+
+.open-btn {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    position: fixed;
+    padding-right: 5px;
+    top: 20px;
+    /* Adjust as needed */
+    left: -20px;
+    /* Adjust as needed */
+    width: 70px;
+    /* Adjust as needed */
+    height: 60px;
+    /* Adjust as needed */
+    background-color: #9d9d9d;
+    cursor: pointer;
+    color: black;
+    font-size: 50px;
+    /* Change cursor to pointer */
+    border-radius: 20px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    border-color: transparent;
+}
+
+input {
+    width: 200px;
+}
+
+th,
+td {
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    /* background-color: #f2f2f2; */
+    text-align: right;
+}
+
+
+#positions-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin-top: 40px;
+}
+
+span {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:center;
+    align-items: center;
+    width: 500px;
+    height: 50px;
+    transition: fill 0.3s ease, stroke 0.3s ease;
+
+  }
+
+.position {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:center;
+    align-items: center;
+    width: 500px;
+    height: 50px;
+    font-size: 25px;
+    transition: fill 0.3s ease, stroke 0.3s ease;
+    cursor: pointer;
+    background-color: #b2b2b2;
+
+
+
+  }
+
+  .candidate {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:center;
+    align-items: center;
+    width: 500px;
+    height: 50px;
+    font-size: 15px;
+    cursor: pointer;
+    background-color: #d7d7d7;
+
+  }
+
+  .candidate:hover{
+    background-color: #999999;
+
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  /* CSS to style the radio buttons and labels */
+  input[type="radio"] {
+    display: inline-block;
+    padding: 0; /* Remove margin */
+    margin: 0px; /* Remove margin */
+    margin-top: 30px;
+    width: 10px;
+  }
+  label {
+    display: inline-block;
+    margin: 0px; /* Remove margin */
+    padding: 0; /* Remove margin */
+    font-size: 20px;
+    margin-right: 10px;
+  }

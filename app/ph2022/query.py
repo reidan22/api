@@ -21,6 +21,12 @@ PROVINCE_BY_REGION_DICT = defaultdict(set)
 for vote_data in VOTE_DATA_LIST:
     PROVINCE_BY_REGION_DICT[vote_data.region].add(vote_data.province)
 
+CANDIDATES_LIST = [vote_data.full_name for vote_data in VOTE_DATA_LIST]
+
+TOTAL_VOTES_PER_POSITION_PER_REGION = defaultdict(lambda: defaultdict(int))
+for vote_data in VOTE_DATA_LIST:
+    TOTAL_VOTES_PER_POSITION_PER_REGION[vote_data.position][vote_data.region] += vote_data.votes
+    
 
 def get_data_per_position():
     agg_data = defaultdict(lambda: defaultdict(int))
@@ -46,11 +52,11 @@ def get_data_per_candidate():
 
 
 def get_data_per_region():
-    agg_data = defaultdict(lambda: defaultdict(dict))
+    agg_data = defaultdict(lambda: defaultdict(lambda: defaultdict(int)))
     for vote_data in VOTE_DATA_LIST:
         agg_data[vote_data.region][vote_data.position][
             vote_data.full_name
-        ] = vote_data.votes
+        ] += vote_data.votes
 
     return agg_data
 
